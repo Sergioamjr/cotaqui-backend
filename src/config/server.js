@@ -14,7 +14,9 @@ var {
   getCartas,
   deleteCarta,
   updateCarta,
-  getSingleCarta
+  getSingleCarta,
+  getSingleCartaWithDetails,
+  getInterested
 } = require("./../schemas");
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -35,5 +37,7 @@ server.get("/get-all-cartas", getCartas);
 server.delete("/delete-carta", deleteCarta);
 server.put("/atualizar-carta", updateCarta);
 server.get("/get-single-carta", getSingleCarta);
+server.get("/get-single-with-details", getSingleCartaWithDetails);
+server.get("/get-interested", getInterested);
 
 module.exports = server;

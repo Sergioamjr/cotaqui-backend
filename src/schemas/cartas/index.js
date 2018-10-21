@@ -148,6 +148,27 @@ const getSingleCarta = (req, res) => {
   if (!_id) {
     res.status(400).json({ errorMessage: "_id não especificado." });
   } else {
+    Carta.findOne(
+      { _id },
+      "-interessado.email -interessado.celular -interessado.telefone",
+      (error, carta) => {
+        if (error || !carta) {
+          res.status(400).json({ errorMessage: "Carta não encontrada." });
+        } else {
+          res.json({ result: carta });
+        }
+      }
+    );
+  }
+};
+
+const getSingleCartaWithDetails = (req, res) => {
+  const {
+    query: { _id }
+  } = req;
+  if (!_id) {
+    res.status(400).json({ errorMessage: "_id não especificado." });
+  } else {
     Carta.findOne({ _id }, (error, carta) => {
       if (error || !carta) {
         res.status(400).json({ errorMessage: "Carta não encontrada." });
@@ -158,10 +179,17 @@ const getSingleCarta = (req, res) => {
   }
 };
 
+const getInterested = (req, res) => {
+  Carta.find({}, (error, cartas) => {
+    res.json({ results: cartas });
+  }).exists("interessado.nome");
+};
 module.exports = {
   getCartas,
   deleteCarta,
   updateCarta,
   addNovaCarta,
-  getSingleCarta
+  getSingleCarta,
+  getSingleCartaWithDetails,
+  getInterested
 };
