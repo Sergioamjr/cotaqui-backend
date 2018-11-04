@@ -75,7 +75,7 @@ const updateCarta = (req, res) => {
       errorMessage: "Por favor, forneça a identificação de uma carta."
     });
   } else {
-    Carta.update(
+    Carta.updateOne(
       { _id },
       {
         administradora,
