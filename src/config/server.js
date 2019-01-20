@@ -16,7 +16,10 @@ var {
   updateCarta,
   getSingleCarta,
   getSingleCartaWithDetails,
-  getInterested
+  getInterested,
+  createParceiro,
+  deleteParceiro,
+  queryParceiro
 } = require("./../schemas");
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -39,5 +42,10 @@ server.put("/atualizar-carta", updateCarta);
 server.get("/get-single-carta", getSingleCarta);
 server.get("/get-single-with-details", getSingleCartaWithDetails);
 server.get("/get-interested", getInterested);
+
+// Parceiro
+server.post("/criar-parceiro", createParceiro);
+server.get("/parceiros", queryParceiro);
+server.delete("/delete-parceiro", deleteParceiro);
 
 module.exports = server;
