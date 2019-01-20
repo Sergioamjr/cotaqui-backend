@@ -19,7 +19,10 @@ var {
   getInterested,
   createParceiro,
   deleteParceiro,
-  queryParceiro
+  queryParceiro,
+  createVenda,
+  queryVenda,
+  deleteVenda
 } = require("./../schemas");
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -47,5 +50,10 @@ server.get("/get-interested", getInterested);
 server.post("/criar-parceiro", createParceiro);
 server.get("/parceiros", queryParceiro);
 server.delete("/delete-parceiro", deleteParceiro);
+
+// Venda
+server.post("/criar-venda", createVenda);
+server.get("/vendas", queryVenda);
+server.delete("/delete-venda", deleteVenda);
 
 module.exports = server;
