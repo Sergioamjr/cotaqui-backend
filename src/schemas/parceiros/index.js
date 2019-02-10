@@ -1,8 +1,9 @@
-const Parceiros = require("./parceiroSchema");
-const _get = require("lodash/get");
+const Parceiros = require('./parceiroSchema');
+const _get = require('lodash/get');
+const Controller = require('./../Controller.js/Controller.js');
 
 const createParceiro = (req, res) => {
-  const { nome_completo, email, telefone, celular } = _get(req, "body");
+  const { nome_completo, email, telefone, celular } = _get(req, 'body');
   const novoParceiro = new Parceiros({
     nome_completo,
     email,
@@ -12,24 +13,20 @@ const createParceiro = (req, res) => {
   });
   novoParceiro.save((error, parceiro) => {
     if (error) {
-      res.json({ errorMessage: "Erro ao criar parceiro", error });
+      res.json({ errorMessage: 'Erro ao criar parceiro', error });
     } else {
-      res.json({ response: "Parceiro criado com sucesso", parceiro });
+      res.json({ response: 'Parceiro criado com sucesso', parceiro });
     }
   });
 };
 
 const deleteParceiro = (req, res) => {
-  const _id = _get(req, "body._id");
-  Parceiros.findByIdAndRemove(_id, () => {
-    res.json({ response: "Parceiro removido com sucesso." });
-  });
+  const _id = _get(req, 'query._id');
+  Controller.removeItem(res, Parceiros, _id, 'PARCEIRO');
 };
 
 const queryParceiro = (req, res) => {
-  Parceiros.find({}, (error, parceiros) => {
-    res.json({ ...parceiros });
-  });
+  Controller.findItem(res, Parceiros, {});
 };
 
 module.exports = {

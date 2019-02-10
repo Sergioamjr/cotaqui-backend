@@ -1,5 +1,6 @@
 const Vendas = require("./vendasSchema.js");
 const _get = require("lodash/get");
+const Controller = require("./../Controller.js/Controller.js");
 
 const createVenda = (req, res) => {
   const venda = _get(req, "body.venda");
@@ -15,19 +16,11 @@ const createVenda = (req, res) => {
 
 const deleteVenda = (req, res) => {
   const _id = _get(req, "body._id");
-  Vendas.findByIdAndRemove(_id, (error, doc) => {
-    if (error || !doc) {
-      res.status(400).json({ response: "Erro ao deletar venda." });
-    } else {
-      res.json({ response: "Venda removida com sucesso." });
-    }
-  });
+  Controller.removeItem(res, Vendas, _id, "VENDA");
 };
 
 const queryVenda = (req, res) => {
-  Vendas.find({}, (error, vendas) => {
-    res.json({ ...vendas });
-  });
+  Controller.findItem(res, Vendas, {}, "VENDA");
 };
 
 module.exports = {

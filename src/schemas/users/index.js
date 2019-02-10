@@ -1,15 +1,15 @@
-var User = require("./usersSchema");
-var bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+var User = require('./usersSchema');
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 var SECRET = process.env.SECRET_JWT;
-var { sendEmail } = require("./../../config/routes");
+var { sendEmail } = require('./../../config/routes');
 
 const Login = (req, res) => {
   const {
     body: { email, password }
   } = req;
   if (!email || !password) {
-    res.json({ message: "Digite email e senha." }, 403);
+    res.json({ message: 'Digite email e senha.' }, 403);
   } else {
     User.findOne({ email }, (error, user) => {
       if (user) {
@@ -19,11 +19,13 @@ const Login = (req, res) => {
             const token = jwt.sign({ _id, email }, SECRET);
             res.json({ name, token });
           } else {
-            res.json({ errorMessage: "E-mail ou senha inválidos." }, 403);
+            res
+              .json({ errorMessage: 'E-mail ou senha inválidos.' })
+              .status(403);
           }
         });
       } else {
-        res.json({ errorMessage: "E-mail ou senha inválidos." }, 403);
+        res.json({ errorMessage: 'E-mail ou senha inválidos.' }).status(403);
       }
     });
   }
@@ -34,14 +36,14 @@ const CreateUser = (req, res) => {
     body: { password, name, email }
   } = req;
   if (!password || !name || !email) {
-    res.json({ errorMessage: "Preencha todos os campos." });
+    res.json({ errorMessage: 'Preencha todos os campos.' });
   } else {
     User.findOne({ email }, (error, user) => {
       if (user) {
         res
           .json({
             errorMessage:
-              "Já existe uma conta com esse e-mail. Faça login ou recupere sua senha."
+              'Já existe uma conta com esse e-mail. Faça login ou recupere sua senha.'
           })
           .status(403);
       } else {
@@ -54,7 +56,7 @@ const CreateUser = (req, res) => {
                   !error
                     ? Login(req, res)
                     : res
-                        .json({ errorMessage: "Erro ao criar usuário", error })
+                        .json({ errorMessage: 'Erro ao criar usuário', error })
                         .status(403);
                 });
               }
@@ -71,13 +73,13 @@ const ResetPassword = (req, res) => {
     body: { password, repassword, token }
   } = req;
   if (!token) {
-    res.json({ errorMessage: "Nenhum token fornecido" }).status(401);
+    res.json({ errorMessage: 'Nenhum token fornecido' }).status(401);
   } else if (!password || password !== repassword) {
-    res.json({ errorMessage: "Digite e confirme sua senha nova." }).status(403);
+    res.json({ errorMessage: 'Digite e confirme sua senha nova.' }).status(403);
   } else {
     jwt.verify(token, SECRET, (error, decoded) => {
       if (error) {
-        res.json({ errorMessage: "Token inváido." }).status(403);
+        res.json({ errorMessage: 'Token inváido.' }).status(403);
       } else {
         const { _id } = decoded;
         bcrypt.genSalt(10, (saltError, salt) => {
@@ -94,12 +96,12 @@ const ResetPassword = (req, res) => {
                       res
                         .json({
                           errorMessage:
-                            "Não foi possível resetar sua senha. Tente novamente."
+                            'Não foi possível resetar sua senha. Tente novamente.'
                         })
                         .status(403);
                     } else {
                       res.json({
-                        success: "Senha resetada com sucesso. Faça login."
+                        success: 'Senha resetada com sucesso. Faça login.'
                       });
                     }
                   }
@@ -118,7 +120,7 @@ const SendEmailToResetPassword = (req, res) => {
     body: { email }
   } = req;
   if (!email) {
-    res.json({ errorMessage: "Digite um e-mail" }, 400);
+    res.json({ errorMessage: 'Digite um e-mail' }, 400);
   } else {
     User.findOne({ email }, (error, user) => {
       if (user) {
@@ -126,12 +128,12 @@ const SendEmailToResetPassword = (req, res) => {
         jwt.sign({ _id }, SECRET, (error, token) => {
           req.body.to = email;
           req.body.message = `Token para resetar sua senha: ${token}`;
-          req.body.subject = "Reset de senha - GAS";
-          req.body.successMessage = "Link enviado para seu email";
+          req.body.subject = 'Reset de senha - GAS';
+          req.body.successMessage = 'Link enviado para seu email';
           sendEmail(req, res);
         });
       } else {
-        res.json({ message: "Nenhuma conta encontrada com esse e-mail" });
+        res.json({ message: 'Nenhuma conta encontrada com esse e-mail' });
       }
     });
   }
@@ -142,11 +144,11 @@ const ValidatedToken = (req, res) => {
     body: { token }
   } = req;
   if (!token) {
-    res.json({ errorMessage: "Token não fornecido." }).status(403);
+    res.json({ errorMessage: 'Token não fornecido.' }).status(403);
   } else {
     jwt.verify(token, SECRET, error => {
       if (error) {
-        return res.json({ message: "Token inváido." }).status(403);
+        return res.json({ message: 'Token inváido.' }).status(403);
       } else {
         return res.json({ isValid: true });
       }
