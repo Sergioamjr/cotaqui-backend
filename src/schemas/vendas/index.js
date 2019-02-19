@@ -23,8 +23,14 @@ const queryVenda = (req, res) => {
   Controller.findItem(res, Vendas, {}, 'VENDA');
 };
 
+const getSingleVenda = (req, res) => {
+  const _id = _get(req, 'query._id');
+  Controller.findItem(res, Vendas, { _id }, 'VENDA');
+};
+
 module.exports = {
   createVenda,
   queryVenda,
-  deleteVenda
+  deleteVenda,
+  getSingleVenda
 };

@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 const responsavelObjeto = {
   nome: { type: String, required: true },
@@ -12,7 +12,7 @@ const vendaObjeto = {
   type: {
     type: String,
     required: true,
-    enum: ["IMOVEL", "CARRO"],
+    enum: ['IMOVEL', 'CARRO'],
     uppercase: true
   },
   administradora: { type: String, required: true },
@@ -23,7 +23,7 @@ const vendaObjeto = {
   valorPretendido: { type: Number, required: true },
   grupo: { type: String, required: true },
   cota: { type: String, required: true },
-  contemplado: { type: Boolean, required: true },
+  contemplado: { type: String, required: true },
   entrada: { type: Number },
   vencimento: { type: Date },
   responsavel: responsavelObjeto
@@ -31,4 +31,4 @@ const vendaObjeto = {
 
 const vendaSchema = mongoose.Schema(vendaObjeto);
 
-module.exports = mongoose.model("Vendas", vendaSchema);
+module.exports = mongoose.model('Vendas', vendaSchema);

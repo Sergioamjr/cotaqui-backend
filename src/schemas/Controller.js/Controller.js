@@ -10,6 +10,7 @@ class ControllerDB {
   }
 
   static findItem(response, Model, query) {
+    console.log('id', query);
     Model.find(query, (error, docs) => {
       response.json({ ...docs });
     });
