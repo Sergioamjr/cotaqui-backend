@@ -1,4 +1,6 @@
 module.exports = {
-  ...require('./users'),
-  ...require('./cartas'),
+  ...require("./users"),
+  ...require("./cartas"),
+  ...require("./parceiros"),
+  ...require("./vendas")
 };

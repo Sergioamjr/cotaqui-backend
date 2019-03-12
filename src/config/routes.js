@@ -1,25 +1,24 @@
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
+var _get = require("lodash.get");
 
 const routeDefault = (req, res) => {
   res.json({
-    status: 'OK',
+    status: "OK"
   });
 };
 
 const sendEmail = (req, res) => {
-  const {
-    body: {
-      subject,
-      message,
-      successMessage,
-      to,
-    }
-  } = req;
+  const { subject, message, to } = _get(req, "body", {});
+  if (!subject || !message || !to) {
+    return res.json({
+      ErrorMessage: "Forneça o assunto, mensagem e destinatário"
+    });
+  }
   var transporte = nodemailer.createTransport({
-    service: 'Yahoo',
+    service: "Yahoo",
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      pass: process.env.EMAIL_PASS
     }
   });
 
@@ -27,13 +26,15 @@ const sendEmail = (req, res) => {
     from: process.env.EMAIL_USER,
     to: to || process.env.EMAIL_USER,
     subject,
-    html: `Mensagem: <strong>${message}</strong>`,
+    html: `Mensagem: <strong>${message}</strong>`
   };
 
-  transporte.sendMail(emailConfig, (err, info) => {
-    res.json(err ? err : {
-      msg: 'E-mail enviado com sucesso',
-      successMessage,
+  transporte.sendMail(emailConfig, (error, info) => {
+    if (error) {
+      res.json({ ErrorMessage: "Problema ao enviar e-mail.", error });
+    }
+    res.json({
+      msg: "E-mail enviado com sucesso",
       message,
       subject,
       info
@@ -41,8 +42,7 @@ const sendEmail = (req, res) => {
   });
 };
 
-
 module.exports = {
   sendEmail,
-  routeDefault,
+  routeDefault
 };
