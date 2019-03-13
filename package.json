@@ -4,10 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "prod": "pm2 start src/index.js --name cotaqui-backend",
-    "start": "nodemon ./src",
-    "playground": "nodemon ./playground",
-    "test": "jasmine-node tests/ --watch"
+    "start": "pm2 start src/index.js --name cotaqui-backend"
   },
   "keywords": [],
   "author": "",
