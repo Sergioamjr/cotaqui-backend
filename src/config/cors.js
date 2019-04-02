@@ -1,10 +1,12 @@
 const corsOptions = {
   origin: [
-    "http://localhost:3000",
-    "https://cotaqui.netlify.com"
+    'http://localhost:3000',
+    'https://cotaqui.netlify.com',
+    'https://www.cotaquionline.com.br',
+    'https://cotaquionline.com.br'
   ],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "x-auth"],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'x-auth'],
   optionsSuccessStatus: 200
 };
 
