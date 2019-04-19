@@ -13,7 +13,8 @@ const addNovaCarta = (req, res) => {
       feitaPor,
       interessado = {},
       type,
-      observacoes = ''
+      observacoes = '',
+      nova
     }
   } = req;
   if (
@@ -38,6 +39,7 @@ const addNovaCarta = (req, res) => {
     vencimento,
     observacoes,
     interessado,
+    nova,
     type: type.toUpperCase(),
     ultimaAlteracao: new Date(),
     feitaPor
@@ -67,7 +69,8 @@ const updateCarta = (req, res) => {
       vencimento,
       feitaPor,
       interessado = {},
-      observacoes = ''
+      observacoes = '',
+      nova
     }
   } = req;
 
@@ -89,6 +92,7 @@ const updateCarta = (req, res) => {
         feitaPor,
         observacoes,
         interessado,
+        nova,
         ultimaAlteracao: new Date()
       },
       error => {

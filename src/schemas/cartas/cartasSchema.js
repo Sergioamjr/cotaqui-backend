@@ -14,6 +14,7 @@ const cartaObjeto = {
     enum: ["IMOVEL", "CARRO"],
     uppercase: true
   },
+  nova: { type: Boolean, default: false },
   administradora: { type: String, required: true },
   credito: { type: Number, required: true },
   entrada: { type: Number, required: true },
