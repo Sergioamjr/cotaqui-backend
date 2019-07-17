@@ -1,10 +1,11 @@
-var Carta = require('./cartasSchema');
-var _get = require('lodash').get;
+var Carta = require("./cartasSchema");
+var _get = require("lodash").get;
 
 const addNovaCarta = (req, res) => {
   const {
     body: {
       administradora,
+      opcoesDeParcelas,
       credito,
       entrada,
       parcelas,
@@ -13,7 +14,7 @@ const addNovaCarta = (req, res) => {
       feitaPor,
       interessado = {},
       type,
-      observacoes = '',
+      observacoes = "",
       nova
     }
   } = req;
@@ -27,7 +28,7 @@ const addNovaCarta = (req, res) => {
   ) {
     res
       .status(400)
-      .json({ errorMessage: 'Por favor, preencha todos os campos.' });
+      .json({ errorMessage: "Por favor, preencha todos os campos." });
   }
 
   const novaCarta = new Carta({
@@ -38,6 +39,7 @@ const addNovaCarta = (req, res) => {
     valorDasParcelas,
     vencimento,
     observacoes,
+    opcoesDeParcelas,
     interessado,
     nova,
     type: type.toUpperCase(),
@@ -51,7 +53,7 @@ const addNovaCarta = (req, res) => {
         .status(400)
         .json({ errorMessage: `Não possível salvar carta: ${error}` });
     } else {
-      res.json({ response: 'Carta salva com sucesso.', document: doc });
+      res.json({ response: "Carta salva com sucesso.", document: doc });
     }
   });
 };
@@ -60,6 +62,7 @@ const updateCarta = (req, res) => {
   const {
     body: {
       administradora,
+      opcoesDeParcelas,
       credito,
       entrada,
       parcelas,
@@ -69,14 +72,14 @@ const updateCarta = (req, res) => {
       vencimento,
       feitaPor,
       interessado = {},
-      observacoes = '',
+      observacoes = "",
       nova
     }
   } = req;
 
   if (!_id) {
     res.status(400).json({
-      errorMessage: 'Por favor, forneça a identificação de uma carta.'
+      errorMessage: "Por favor, forneça a identificação de uma carta."
     });
   } else {
     Carta.updateOne(
@@ -85,6 +88,7 @@ const updateCarta = (req, res) => {
         administradora,
         credito,
         entrada,
+        opcoesDeParcelas,
         parcelas,
         valorDasParcelas,
         vencimento,
@@ -101,7 +105,7 @@ const updateCarta = (req, res) => {
             errorMessage: `!Não foi possível atualizar carta: ${error}`
           });
         } else {
-          res.json({ response: 'Carta atualizada com sucesso.' });
+          res.json({ response: "Carta atualizada com sucesso." });
         }
       }
     );
@@ -119,7 +123,7 @@ const getCartas = (req, res) => {
 
   Carta.find(query, (error, cartas) => {
     if (error) {
-      res.json({ errorMessage: 'Não foi possível verificar as cartas' });
+      res.json({ errorMessage: "Não foi possível verificar as cartas" });
     } else {
       res.json({ response: { ...cartas } });
     }
@@ -133,15 +137,15 @@ const deleteCarta = (req, res) => {
   if (!_id) {
     res
       .status(400)
-      .json({ errorMessage: 'Informe uma carta para ser excluida' });
+      .json({ errorMessage: "Informe uma carta para ser excluida" });
   } else {
     Carta.findByIdAndRemove({ _id }, error => {
       if (error) {
         res
           .status(400)
-          .json({ errorMessage: 'Não foi possível excluir a carta' });
+          .json({ errorMessage: "Não foi possível excluir a carta" });
       } else {
-        res.json({ response: 'Carta excluida com sucesso.' });
+        res.json({ response: "Carta excluida com sucesso." });
       }
     });
   }
@@ -152,14 +156,14 @@ const getSingleCarta = (req, res) => {
     query: { _id }
   } = req;
   if (!_id) {
-    res.status(400).json({ errorMessage: '_id não especificado.' });
+    res.status(400).json({ errorMessage: "_id não especificado." });
   } else {
     Carta.findOne(
       { _id },
-      '-interessado.email -interessado.celular -interessado.telefone',
+      "-interessado.email -interessado.celular -interessado.telefone",
       (error, carta) => {
         if (error || !carta) {
-          res.status(400).json({ errorMessage: 'Carta não encontrada.' });
+          res.status(400).json({ errorMessage: "Carta não encontrada." });
         } else {
           res.json({ result: carta });
         }
@@ -173,11 +177,11 @@ const getSingleCartaWithDetails = (req, res) => {
     query: { _id }
   } = req;
   if (!_id) {
-    res.status(400).json({ errorMessage: '_id não especificado.' });
+    res.status(400).json({ errorMessage: "_id não especificado." });
   } else {
     Carta.findOne({ _id }, (error, carta) => {
       if (error || !carta) {
-        res.status(400).json({ errorMessage: 'Carta não encontrada.' });
+        res.status(400).json({ errorMessage: "Carta não encontrada." });
       } else {
         res.json({ result: carta });
       }
@@ -188,7 +192,7 @@ const getSingleCartaWithDetails = (req, res) => {
 const getInterested = (req, res) => {
   Carta.find({}, (error, cartas) => {
     res.json({ results: cartas });
-  }).exists('interessado.nome');
+  }).exists("interessado.nome");
 };
 module.exports = {
   getCartas,

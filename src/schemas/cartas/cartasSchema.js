@@ -24,7 +24,8 @@ const cartaObjeto = {
   observacoes: { type: String },
   ultimaAlteracao: { type: Date, required: true },
   feitaPor: { type: String, required: true },
-  interessado: interessadoObjeto
+  interessado: interessadoObjeto,
+  opcoesDeParcelas: { type: Array }
 };
 
 const cartaSchema = mongoose.Schema(cartaObjeto);
