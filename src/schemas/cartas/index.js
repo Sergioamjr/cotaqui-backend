@@ -123,7 +123,7 @@ const getCartas = (req, res) => {
 
   Carta.find(query, (error, cartas) => {
     if (error) {
-      res.json({ errorMessage: "Não foi possível verificar as cartas" });
+      res.json({ errorMessage: "Não foi possível verificar as cartas", error });
     } else {
       res.json({ response: { ...cartas } });
     }
